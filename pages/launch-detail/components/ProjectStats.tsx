@@ -4,9 +4,14 @@ import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair
 import { DynamicFormatAmount } from "@/lib/algebra/utils/common/formatAmount";
 import CountdownTimer from "./Countdown";
 import { observer } from "mobx-react-lite";
-
+import { DedicatedPot2Pump } from "@/config/dedicatedPot2pump";
 interface ProjectStatsProps {
   pair?: MemePairContract | null;
+  className?: string;
+}
+
+interface DedicatedProjectStatsProps {
+  token: DedicatedPot2Pump;
   className?: string;
 }
 
@@ -189,4 +194,74 @@ const ProjectStats: React.FC<ProjectStatsProps> = observer(
   }
 );
 
+export const DedicatedProjectStats: React.FC<DedicatedProjectStatsProps> =
+  observer(({ token, className }) => {
+    if (!token) return null;
+
+    return (
+      <div
+        className={cn("flex flex-col items-center gap-3 md:gap-8", className)}
+      >
+        <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-3 md:gap-x-6 gap-y-2 md:gap-y-3 text-xs w-full">
+          <div className="flex flex-col items-center gap-1 md:gap-1.5">
+            <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
+              Total Supply
+            </span>
+            <span className="text-sm md:text-[15px] font-bold">
+              {DynamicFormatAmount({
+                amount: token.token.totalSupplyWithoutDecimals
+                  .div(10 ** token.token.decimals)
+                  .toString(),
+                decimals: 2,
+                endWith: ` ${token.token.symbol || ""}`,
+              })}
+            </span>
+          </div>
+          <div className="flex flex-col items-center gap-1 md:gap-1.5">
+            <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
+              24H Change
+            </span>
+            <span
+              className={cn(
+                "text-sm md:text-[15px] font-bold",
+                token.token.priceChange24hPercentage?.startsWith("-")
+                  ? "text-red-500"
+                  : "text-green-500"
+              )}
+            >
+              {DynamicFormatAmount({
+                amount: token.token.priceChange24hPercentage ?? "0",
+                decimals: 2,
+                endWith: "%",
+              })}
+            </span>
+          </div>
+          <div className="flex flex-col items-center gap-1 md:gap-1.5">
+            <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
+              MCap
+            </span>
+            <span className="text-sm md:text-[15px] font-bold">
+              {DynamicFormatAmount({
+                amount: Number(token.token.marketCap) || 0,
+                decimals: 2,
+                beginWith: "$",
+              })}
+            </span>
+          </div>
+          <div className="flex flex-col items-center gap-1 md:gap-1.5">
+            <span className="text-[10px] md:text-[11px] text-[#5C5C5C]/60 uppercase">
+              Price
+            </span>
+            <span className="text-sm md:text-[15px] font-bold">
+              $
+              {DynamicFormatAmount({
+                amount: token.token.derivedUSD ?? "0",
+                decimals: 3,
+              })}
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  });
 export default ProjectStats;

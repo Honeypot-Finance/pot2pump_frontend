@@ -9,7 +9,7 @@ interface ProjectDescriptionProps {
 
 const ProjectDescription: React.FC<ProjectDescriptionProps> = ({
   description,
-  className
+  className,
 }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -20,15 +20,17 @@ const ProjectDescription: React.FC<ProjectDescriptionProps> = ({
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768); // md breakpoint
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   useEffect(() => {
     if (textRef.current) {
-      const lineHeight = parseInt(window.getComputedStyle(textRef.current).lineHeight);
+      const lineHeight = parseInt(
+        window.getComputedStyle(textRef.current).lineHeight
+      );
       const height = textRef.current.offsetHeight;
       setShouldShowMore(height > lineHeight * 3);
     }
@@ -38,7 +40,12 @@ const ProjectDescription: React.FC<ProjectDescriptionProps> = ({
 
   if (isMobile) {
     return (
-      <div className={cn("text-xs flex flex-col items-center justify-center shadow-inner rounded-md p-2 border border-[#202020]/5", className)}>
+      <div
+        className={cn(
+          "text-xs flex flex-col items-center justify-center shadow-inner rounded-md p-2 border border-[#202020]/5",
+          className
+        )}
+      >
         <div
           ref={textRef}
           className={cn(
@@ -61,7 +68,12 @@ const ProjectDescription: React.FC<ProjectDescriptionProps> = ({
   }
 
   return (
-    <div className={cn("text-xs shadow-inner rounded-xl p-4 border border-[#202020]/5", className)}>
+    <div
+      className={cn(
+        "text-xs shadow-inner rounded-xl p-4 border border-[#202020]/5",
+        className
+      )}
+    >
       <ReactTyped
         strings={[description]}
         typeSpeed={25}
@@ -71,4 +83,4 @@ const ProjectDescription: React.FC<ProjectDescriptionProps> = ({
   );
 };
 
-export default ProjectDescription; 
+export default ProjectDescription;

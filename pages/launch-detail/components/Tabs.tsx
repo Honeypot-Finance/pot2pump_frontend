@@ -14,8 +14,11 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import UpdateProjectModal from "./ProjectTitle";
-import TransactionHistory from "./TransactionHistory";
+import TransactionHistory, {
+  DedicatedTransactionHistory,
+} from "./TransactionHistory";
 import TopHoldersTable from "./TopHoldersTable";
+import { DedicatedPot2Pump } from "@/config/dedicatedPot2pump";
 
 const universalMenuItems = [
   { key: "txs", label: "Transactions" },
@@ -68,7 +71,9 @@ const Tabs = observer(
               base: "max-h-[70vh] overflow-y-scroll",
             }}
           >
-            <UpdateProjectModal pair={pair as MemePairContract}></UpdateProjectModal>
+            <UpdateProjectModal
+              pair={pair as MemePairContract}
+            ></UpdateProjectModal>
           </Modal>
         )}
 
@@ -186,6 +191,47 @@ const Tabs = observer(
               </Tab>
             </>
           )}
+        </NextUITabs>
+      </div>
+    );
+  }
+);
+
+export const DedicatedTabs = observer(
+  ({ token }: { token: DedicatedPot2Pump }) => {
+    return (
+      <div className="relative">
+        <NextUITabs
+          aria-label="Project Details"
+          classNames={{
+            base: "relative w-full",
+            tabList: cn(
+              "flex rounded-2xl border border-[#202020] bg-white shadow-[4px_4px_0px_0px_#202020,-4px_4px_0px_0px_#202020]",
+              "py-1.5 sm:py-2 px-2.5 sm:px-3.5 absolute left-1/2 -translate-x-1/2 z-10 -top-5",
+              "overflow-x-auto max-w-[90vw] sm:max-w-none",
+              "p-1 sm:p-4"
+            ),
+            tab: "px-1 sm:px-2 py-1 rounded-lg whitespace-nowrap text-xs sm:text-sm sm:text-base",
+            tabContent: "group-data-[selected=true]:text-white",
+            cursor:
+              "bg-[#020202] border border-black shadow-[0.5px_0.5px_0px_0px_#000000] sm:shadow-[2px_2px_0px_0px_#000000]",
+            panel: cn(
+              "flex flex-col h-full w-full gap-y-4 justify-center items-center bg-[#FFCD4D] rounded-2xl text-[#202020]",
+              "px-2 sm:px-4 pt-[50px] sm:pt-[70px] pb-[50px] sm:pb-[70px]",
+              "bg-[url('/images/card-container/honey/honey-border.png'),url('/images/card-container/dark/bottom-border.svg')]",
+              "bg-[position:-65px_top,_-85px_bottom]",
+              "bg-[size:auto_65px,_auto_65px]",
+              "bg-repeat-x",
+              "!mt-0"
+            ),
+          }}
+        >
+          <Tab
+            key="txs"
+            title="Transactions"
+          >
+            <DedicatedTransactionHistory token={token} />
+          </Tab>
         </NextUITabs>
       </div>
     );

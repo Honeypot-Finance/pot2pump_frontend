@@ -3,11 +3,14 @@ import { FtoPairContract } from "@/services/contract/launches/fto/ftopair-contra
 import { Button } from "@/components/button/button-next";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import { LaunchDetailSwapCard } from "@/components/SwapCard/MemeSwap";
+import { DedicatedSwapCard } from "@/components/SwapCard/MemeSwap";
 import PottingModal from "@/components/atoms/Pot2PumpComponents/PottingModal";
 import { wallet } from "@/services/wallet";
 
 import { SwapField } from "@/types/algebra/types/swap-field";
 import { useDerivedSwapInfo } from "@/lib/algebra/state/swapStore";
+import { DedicatedPot2Pump } from "@/config/dedicatedPot2pump";
+
 const SuccessAction = observer(
   ({
     pair,
@@ -151,6 +154,43 @@ const Action = observer(
           />
         );
     }
+  }
+);
+
+export const DedicatedAction = observer(
+  ({
+    token,
+    refreshTxsCallback,
+  }: {
+    token: DedicatedPot2Pump;
+    refreshTxsCallback?: () => void;
+  }) => {
+    const {
+      toggledTrade: trade,
+      currencyBalances,
+      parsedAmount,
+      currencies,
+    } = useDerivedSwapInfo();
+    return (
+      <DedicatedSwapCard
+        noBoarder
+        inputAddress={wallet.currentChain.nativeToken.address.toLowerCase()}
+        outputAddress={token.tokenAddress}
+        onSwapSuccess={refreshTxsCallback}
+        isInputNative={
+          wallet.currentChain.nativeToken.address.toLowerCase() ===
+          token.tokenAddress.toLowerCase()
+        }
+        disableFromSelection={
+          token.tokenAddress.toLowerCase() ===
+          currencies[SwapField.INPUT]?.wrapped.address.toLowerCase()
+        }
+        disableToSelection={
+          token.tokenAddress.toLowerCase() ===
+          currencies[SwapField.OUTPUT]?.wrapped.address.toLowerCase()
+        }
+      />
+    );
   }
 );
 

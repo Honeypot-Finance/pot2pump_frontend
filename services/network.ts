@@ -255,6 +255,7 @@ export const berachainNetwork = new Network({
       symbol: "BRLY",
       decimals: 18,
       logoURI: "/images/icons/tokens/berally.png",
+      isDedicatedPot2PumpPage: true,
     },
     "0x1ce0a25d13ce4d52071ae7e02cf1f6606f4c79d3": {
       name: "NECT",

@@ -1,11 +1,15 @@
 import { DynamicFormatAmount } from "@/lib/algebra/utils/common/formatAmount";
 import { MemePairContract } from "@/services/contract/launches/pot2pump/memepair-contract";
 import { DOMAIN_MAP } from "honeypot-sdk";
+import { DedicatedPot2Pump } from "./dedicatedPot2pump";
 
 type platformMap = "telegram" | "twitter";
 
 export const pot2pumpShareLink = (pair: MemePairContract) =>
   `${DOMAIN_MAP.POT2PUMP}/launch-detail/${pair.launchedToken?.address}`;
+
+export const dedicatedPot2PumpShareLink = (token: DedicatedPot2Pump) =>
+  `${DOMAIN_MAP.POT2PUMP}/launch-detail/${token.tokenAddress}`;
 
 // $BM now trading on @honeypotfinance - #Berachain  #Meteora.
 // 📈 24h Change: +X%
@@ -27,6 +31,19 @@ CA: ${pair.launchedToken?.address}
 Trade now on:
 `;
 };
+
+export const dedicatedPot2PumpShareTwitterContent = (
+  token: DedicatedPot2Pump
+) => `
+🚀 Pot2Pump
+💥 Ticker: ${token.token.symbol} 
+🔹 Full Name: ${token.token.displayName}  
+
+📈 Price Growth since Launch: ${Number(token.token.priceChange24hPercentage).toFixed(2)}%     
+💵 USD Price: $${Number(token.token.derivedUSD).toExponential(3)} 
+
+🔗 ${window.location.origin}/launch-detail/${token.tokenAddress}
+`;
 
 export const pot2PumpPottingShareTwitterContent = (pair: MemePairContract) => `
 🚀$${pair.launchedToken?.symbol} now launched on @honeypotfinance pot2pump - #Berachain #Meteora.

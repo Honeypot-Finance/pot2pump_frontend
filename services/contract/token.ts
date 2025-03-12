@@ -69,6 +69,7 @@ export class Token implements BaseContract {
   priceChange = "";
   priceChange24hPercentage = "";
   pot2pumpAddress: Address | undefined | null = undefined;
+  isDedicatedPot2PumpPage = false;
 
   // determines the order of the token in the list
   get priority() {
@@ -456,6 +457,8 @@ export class Token implements BaseContract {
 
     const totalSupply = await this.contract.read.totalSupply();
 
+    console.log("totalSupply", totalSupply);
+
     this.totalSupplyWithoutDecimals = new BigNumber(totalSupply.toString());
 
     localStorage.setItem(
@@ -512,17 +515,6 @@ export class Token implements BaseContract {
     if (this.indexerDataLoaded && !option?.force) {
       return;
     }
-    // const indexerTokenData =
-    //   await trpcClient.indexerFeedRouter.getPairTokenData.query({
-    //     tokenAddress: this.address,
-    //     chainId: wallet.currentChainId.toString(),
-    //   });
-
-    // //console.log("indexerTokenData", indexerTokenData);
-
-    // if (indexerTokenData.status === "success") {
-    //   Object.assign(this, indexerTokenData.data);
-    // }
 
     const indexerTokenData = await getSingleTokenData(
       this.address.toLowerCase()
