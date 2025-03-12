@@ -132,7 +132,7 @@ export const berachainNetwork = new Network({
     {
       symbol: "HENLO",
       address: "0xb2F776e9c1C926C4b2e54182Fac058dA9Af0B6A5".toLowerCase(),
-      amount: BigInt("4000000000000000000000000"),
+      amount: BigInt("40000000000000000000000000"),
     },
   ],
   nativeFaucet: {
